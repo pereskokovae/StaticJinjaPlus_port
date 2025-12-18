@@ -41,6 +41,27 @@
  4. Jinja2
 
 ## Сборка образов
+Во время сборки используются следующие аргументы:
+`VERSION` -- Версия StaticJinjaPlus или хэш коммита
+Например:
+```bash
+- 0.1.0
+- 0.1.1
+- e19f029cf633bf8d65ac3d330d60a58bd116005d #develop-версия
+```
+
+`ARCHIVE_NAME` -- Имя архива StaticJinjaPlus на GitHub
+Формат всегда одинаковый:
+```bash
+<VERSION>.tar.gz
+```
+
+`ARCHIVE_SHA256` -- хэш архива, который использует Docker
+Чтобы его получить, используйте команду:
+```bash
+sha256sum <ARCHIVE_NAME>
+```
+#### Сборка
 Пример: сборка версии 0.1.1 (Ubuntu)
 ```bash
 docker build \
@@ -51,15 +72,24 @@ docker build \
   -t static-jinja-plus:0.1.1 \
   .
 ```
-
-Пример: сборка develop-slim
+Пример: сборка python-slim
 ```bash
 docker build \
   -f Dockerfile.slim \
+  --build-arg VERSION=0.1.1 \
+  --build-arg ARCHIVE_NAME=0.1.1.tar.gz \
+  --build-arg ARCHIVE_SHA256=<SHA256_ХЭШ> \
+  -t static-jinja-plus:0.1.1-slim \
+  .
+```
+Пример: сборка develop
+```bash
+docker build \
+  -f Dockerfile.ubuntu \
   --build-arg VERSION=<COMMIT_SHA> \
   --build-arg ARCHIVE_NAME=<COMMIT_SHA>.tar.gz \
   --build-arg ARCHIVE_SHA256=<SHA256_ХЭШ> \
-  -t static-jinja-plus:develop-slim \
+  -t static-jinja-plus:develop \
   .
 ```
 
